@@ -134,7 +134,9 @@ relevant_determiner <- function(q_name, type, relevant, env) {
     rel_sheets <- unique(rel_sheets)
     var_sheet <- filter(env$object$survey, name == q_name)$sheet
 
-    if (length(rel_sheets) > 1) {
+    if (any(is.na((rel_sheets))|any(is.na(var_sheet)))) {
+      warn(glue("Can't correct for {q_name} - I am broken...cant find the data sheets."))
+    } else if (length(rel_sheets) > 1) {
       warn(glue("Can't correct for {q_name} relevant logic since it references two or more data sheets."))
     } else if (var_sheet == rel_sheets) {
       same_relevants(var_sheet, q_name, relevant, env)
